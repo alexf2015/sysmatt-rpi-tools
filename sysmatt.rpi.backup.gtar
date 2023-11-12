@@ -20,6 +20,6 @@ DEST_DIR_SANITY=`dirname "${DFILE}"`
 [ -d "${DEST_DIR_SANITY}" ] || bomb "Destination directory ${DEST_DIR_SANITY} does not exist"
 
 # Run the tar archive
-tar --exclude="${DFILE}" --one-file-system -cvzf "${DFILE}" / /boot
+tar --exclude="${DFILE}" --one-file-system -cvzf "${DFILE}" / /boot/firmware
 
 echo "Created archive: ${DFILE}"
