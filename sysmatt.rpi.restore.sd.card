@@ -36,16 +36,16 @@ mkfs.vfat  "${SDCARD_DEVICE}1"
 mkfs.ext4 -F -j "${SDCARD_DEVICE}2" 
 mkdir -p "${MOUNTPOINT}"
 mount "${SDCARD_DEVICE}2" "${MOUNTPOINT}"
-mkdir -p "${MOUNTPOINT}/boot"
-mount "${SDCARD_DEVICE}1" "${MOUNTPOINT}/boot"
+mkdir -p "${MOUNTPOINT}/boot/firmware"
+mount "${SDCARD_DEVICE}1" "${MOUNTPOINT}/boot/firmware"
 df -h "${MOUNTPOINT}"
-df -h "${MOUNTPOINT}/boot"
+df -h "${MOUNTPOINT}/boot/firmware"
 read -p "Press ENTER To begin image restore"
 tar $@ -xvzf  "${PI_BACKUP_SLASH}" -C "${MOUNTPOINT}"
 
 # Begin NOOBS fixup / Recommended by @KevinSidwar / 20140829-1744-MEH
-ORIG_SLASHDEV_FOUND=`cat "${MOUNTPOINT}/etc/fstab"| grep " / "     |grep -v "^#" |awk '{ print $1; }'`
-ORIG_BOOTDEV_FOUND=`cat  "${MOUNTPOINT}/etc/fstab"| grep " /boot " |grep -v "^#" |awk '{ print $1; }'`
+ORIG_SLASHDEV_FOUND=`cat "${MOUNTPOINT}/etc/fstab"| grep " / "              |grep -v "^#" |awk '{ print $1; }'`
+ORIG_BOOTDEV_FOUND=`cat  "${MOUNTPOINT}/etc/fstab"| grep " /boot/firmware " |grep -v "^#" |awk '{ print $1; }'`
 
 # Hardcoded
 NEW_SLASHDEV="/dev/mmcblk0p2"
@@ -122,7 +122,7 @@ echo ""
 echo "Working. This may take a moment..."
 echo ""
 set -x
-umount "${MOUNTPOINT}/boot"
+umount "${MOUNTPOINT}/boot/firmware"
 umount "${MOUNTPOINT}"
 
 
